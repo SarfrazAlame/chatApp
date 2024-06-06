@@ -13,7 +13,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
-const prisma_js_1 = __importDefault(require("../db/prisma.js"));
+const prisma_1 = __importDefault(require("../db/prisma"));
 const protectRoute = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const token = req.cookies.jwt;
@@ -24,7 +24,7 @@ const protectRoute = (req, res, next) => __awaiter(void 0, void 0, void 0, funct
         if (!decoded) {
             return res.status(401).json({ error: "Unauthorized - Invalid Token" });
         }
-        const user = yield prisma_js_1.default.user.findUnique({
+        const user = yield prisma_1.default.user.findUnique({
             where: { id: decoded.userId },
             select: { id: true, username: true, fullname: true, profilePic: true },
         });

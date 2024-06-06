@@ -13,14 +13,14 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.getUsersForSidebar = exports.getMessages = exports.sendMessage = void 0;
-const prisma_js_1 = __importDefault(require("../db/prisma.js"));
-const socket_js_1 = require("../socket/socket.js");
+const prisma_1 = __importDefault(require("../db/prisma"));
+const socket_1 = require("../socket/socket");
 const sendMessage = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const { message } = req.body;
         const { id: recieverId } = req.params;
         const senderId = req.user.id;
-        let conversation = yield prisma_js_1.default.conversation.findFirst({
+        let conversation = yield prisma_1.default.conversation.findFirst({
             where: {
                 participantIds: {
                     hasEvery: [senderId, recieverId]
@@ -28,7 +28,7 @@ const sendMessage = (req, res) => __awaiter(void 0, void 0, void 0, function* ()
             }
         });
         if (!conversation) {
-            conversation = yield prisma_js_1.default.conversation.create({
+            conversation = yield prisma_1.default.conversation.create({
                 data: {
                     participantIds: {
                         set: [senderId, recieverId]
@@ -37,7 +37,7 @@ const sendMessage = (req, res) => __awaiter(void 0, void 0, void 0, function* ()
             });
         }
         ;
-        const newMessage = yield prisma_js_1.default.message.create({
+        const newMessage = yield prisma_1.default.message.create({
             data: {
                 senderId,
                 body: message,
@@ -45,7 +45,7 @@ const sendMessage = (req, res) => __awaiter(void 0, void 0, void 0, function* ()
             }
         });
         if (newMessage) {
-            conversation = yield prisma_js_1.default.conversation.update({
+            conversation = yield prisma_1.default.conversation.update({
                 where: {
                     id: conversation.id
                 },
@@ -58,9 +58,9 @@ const sendMessage = (req, res) => __awaiter(void 0, void 0, void 0, function* ()
                 }
             });
         }
-        const recieverSockerId = (0, socket_js_1.getReceiverSocketId)(recieverId);
+        const recieverSockerId = (0, socket_1.getReceiverSocketId)(recieverId);
         if (recieverSockerId) {
-            socket_js_1.io.to(recieverSockerId).emit("newMessage", newMessage);
+            socket_1.io.to(recieverSockerId).emit("newMessage", newMessage);
         }
         res.status(201).json(newMessage);
     }
@@ -74,7 +74,7 @@ const getMessages = (req, res) => __awaiter(void 0, void 0, void 0, function* ()
     try {
         const { id: userToChatId } = req.params;
         const senderId = req.user.id;
-        const conversation = yield prisma_js_1.default.conversation.findFirst({
+        const conversation = yield prisma_1.default.conversation.findFirst({
             where: {
                 participantIds: {
                     hasEvery: [senderId, userToChatId]
@@ -102,7 +102,7 @@ exports.getMessages = getMessages;
 const getUsersForSidebar = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const authUserId = req.user.id;
-        const users = yield prisma_js_1.default.user.findMany({
+        const users = yield prisma_1.default.user.findMany({
             where: {
                 id: {
                     not: authUserId
