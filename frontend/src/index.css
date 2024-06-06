@@ -3,30 +3,9 @@
 @tailwind utilities;
 
 body {
-    background-color: #0e173c;
+    background-color: #0d6c68;
 }
-.label-text {
-	color: white;
-}
-
-/* dark mode looking scrollbar */
-::-webkit-scrollbar {
-	width: 8px;
-}
-
-::-webkit-scrollbar-track {
-	background: #555;
-}
-
-::-webkit-scrollbar-thumb {
-	background: #121212;
-	border-radius: 5px;
-}
-
-::-webkit-scrollbar-thumb:hover {
-	background: #242424;
-}
-
+ 
 .shake {
 	animation: shake 0.82s cubic-bezier(0.36, 0.07, 0.19, 0.97) 0.2s both;
 	transform: translate3d(0, 0, 0);

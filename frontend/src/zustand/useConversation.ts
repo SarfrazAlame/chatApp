@@ -10,7 +10,7 @@ export type MessageType = {
     id: string,
     body: string,
     senderId: string
-    createAt:string
+    createdAt:string
     shouldShake?:boolean
 }
 
