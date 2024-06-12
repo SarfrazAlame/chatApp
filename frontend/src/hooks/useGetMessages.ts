@@ -25,7 +25,7 @@ const useGetMessages = () => {
 
         getMessages()
     }, [selectedConversation])
-    return {messages, loading}
+    return { messages, loading }
 }
 
 export default useGetMessages

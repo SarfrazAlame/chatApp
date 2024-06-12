@@ -11,8 +11,8 @@ dotenv.config();
 
 const PORT = process.env.PORT || 5001;
 
-app.use(cookieParser()); // for parsing cookies
-app.use(express.json()); // for parsing application/json
+app.use(cookieParser());
+app.use(express.json());
 
 app.use("/api/auth", authRoutes);
 app.use("/api/message", messageRoutes);
